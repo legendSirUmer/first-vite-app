@@ -16,6 +16,7 @@ function App() {
 
   const [data,setData] = useState([]);
   const [data2,setData2] = useState([]);
+  const [data3,setData3] = useState([]);
  
 useEffect(()=>{
   axios.get('http://universities.hipolabs.com/search?country=Pakistan').then((response)=>{
@@ -27,7 +28,14 @@ useEffect(()=>{
   axios.get('https://datausa.io/api/data?drilldowns=Nation&measures=Population').then((res)=>{
     setData2(res.data.data)
   })
+
+  axios.get('https://dog.ceo/api/breeds/image/random').then((res)=>{
+    setData3(res.data)
+  })
 } ,[])
+
+
+
   
 
     return (
@@ -75,6 +83,12 @@ useEffect(()=>{
 
  
 </table>
+
+<div>
+
+  <img src={data3.message} alt="" />
+</div>
+
 
       </>
     )
