@@ -1,51 +1,58 @@
 import { useState,useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import axios from 'axios'
 
-
-
 function App() {
-  const person = [
-    {name: "umer" , city: "karachi"},
-    {name: "umer2" , city: "karachi2"},
-    {name: "umer3" , city: "karachi3"},
-    {name: "umer4" , city: "karachi4"},
-  ]
+  const [count,setCount] = useState([])
+  const [data ,setData ] = useState([])
+  const [data2,setData2] = useState([])
+  const [data3,setData3] = useState({})
+  const [data4,setData4] = useState({})
+  const [data5,setData5] = useState({})
+  const [data6,setData6] = useState('')
+  const [inputValue, setInputValue] = useState('');
 
-  const [data,setData] = useState([]);
-  const [data2,setData2] = useState([]);
-  const [data3,setData3] = useState([]);
- 
-useEffect(()=>{
-  axios.get('http://universities.hipolabs.com/search?country=Pakistan').then((response)=>{
-    setData(response.data)
-  })
-},[])
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
 
-useEffect(()=>{
-  axios.get('https://datausa.io/api/data?drilldowns=Nation&measures=Population').then((res)=>{
-    setData2(res.data.data)
-  })
+  const handleSubmit = (event) => {
+    event.preventDefault();
+     axios.get('https://api.agify.io/?name='+inputValue).then((res)=>{
+          setData5(res.data)
+          console.log(data5)
+        })
 
-  axios.get('https://dog.ceo/api/breeds/image/random').then((res)=>{
-    setData3(res.data)
-  })
-} ,[])
-
-
-
+  };
   
 
-    return (
-      <>
+  useEffect(()=>{
 
-         {/* {person.map( (per,index)=> { return (<li> {per.name +" "+ per.city} </li>)}   )} */}
+        // axios.get('http://127.0.0.1:8000/userapiprofile/?format=json').then((res)=>{
+        // setCount(res.data)    
+        // }) //// with django rest framework project
 
-         
-          
+        axios.get('http://universities.hipolabs.com/search?country=Pakistan').then((res)=>{
+          setData(res.data)
+        })
+        axios.get('https://datausa.io/api/data?drilldowns=Nation&measures=Population').then((res)=>{
+          setData2(res.data.data)
+        })
+        axios.get('https://dog.ceo/api/breeds/image/random').then((res)=>{
+          setData3(res.data)
+        })
+        axios.get('https://catfact.ninja/fact').then((res)=>{
+          setData4(res.data)
+        })
+       
 
+  },[])
+
+  // {count.map((movie,index)=> (  <li> {movie.user}  <img  src={movie.profileimg} alt="" /> </li> ))} //// with django rest framework project 
+  return (
+   <div>
+
+    
 <table border={"2px"}>
   <thead>
 
@@ -87,11 +94,32 @@ useEffect(()=>{
 <div>
 
   <img src={data3.message} alt="" />
+
 </div>
 
 
-      </>
-    )
+<div>
+  <h4>Random Cat Fact</h4>
+  <p>{data4.fact}</p>
+</div>
+
+
+
+
+    <form onSubmit={handleSubmit}>
+      <label>
+        Enter your name:
+        <input type="text" value={inputValue} onChange={handleChange} />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+    {data5.age && (
+      <p>{"Age: "+data5.age}</p>
+    )}
+    
+   </div>
+  )
+  
 }
 
 export default App
