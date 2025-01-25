@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
+import Child from './child'
 
 function App() {
   const [count,setCount] = useState([])
@@ -11,6 +12,11 @@ function App() {
   const [data5,setData5] = useState({})
   const [data6,setData6] = useState('')
   const [inputValue, setInputValue] = useState('');
+  let [value,setValue] = useState('') 
+
+  const handleValueChange = (newValue) => {
+    setValue(newValue);
+  };
 
   const handleChange = (event) => {
     setInputValue(event.target.value);
@@ -116,6 +122,16 @@ function App() {
     {data5.age && (
       <p>{"Age: "+data5.age}</p>
     )}
+
+
+
+
+<div>
+      <h1>Value from Child: {value}</h1>
+      <Child onValueChange={handleValueChange} />
+    </div>
+
+
     
    </div>
   )
